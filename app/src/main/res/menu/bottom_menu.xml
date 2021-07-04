@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/past_game_list"
+        android:title="Finished"
+        android:icon="@drawable/ic_arrow_back"/>
+    <item android:id="@+id/current_game_list"
+        android:title="Playing"
+        android:icon="@drawable/ic_arrow_downward"/>
+    <item android:id="@+id/future_game_list"
+        android:title="Waiting"
+        android:icon="@drawable/ic_arrow_forward"/>
+</menu>
