@@ -1,5 +1,8 @@
 package com.example.glc
 
-class UserViewModel {
+import androidx.lifecycle.ViewModel
+
+class UserViewModel : ViewModel() {
+
 
 }

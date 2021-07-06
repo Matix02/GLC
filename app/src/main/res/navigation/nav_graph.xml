@@ -23,5 +23,10 @@
         android:label="fragment_future_game_list"
         tools:layout="@layout/fragment_future_game_list"
         />
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.example.glc.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 
 </navigation>
