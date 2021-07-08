@@ -1,3 +1,3 @@
 package com.example.glc
 
-data class User(val username: String)
+data class User(val uid: String, val username: String, val email: String)
