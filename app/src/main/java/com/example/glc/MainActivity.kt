@@ -33,6 +33,3 @@ class MainActivity : AppCompatActivity() {
         //2. Pomysł na to by bottomNavigationView było domyslnie ukryte i dopiero po logowaniu było dokryte
     }
 }
-//Zastanowić się jak dodać to LoginActivity, by jako pierwsze było jeśli użytkownik nie jest zalogowany - zakładaka z StackOverFlow
-//Następnie View i Data Binding dodać
-//Następnie LogowanieGoogle z MVVM itd.

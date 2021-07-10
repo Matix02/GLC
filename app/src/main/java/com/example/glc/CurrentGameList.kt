@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.glc.databinding.FragmentCurrentGameListBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -22,50 +23,23 @@ class CurrentGameList : Fragment() {
     private var _binding: FragmentCurrentGameListBinding? = null
     private val binding get() = _binding
 
-    private val loginViewModel: LoginViewModel by activityViewModels()
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentCurrentGameListBinding.inflate(inflater, container, false)
         val view = binding?.root
-
-        Log.d("Creating", "onCreateView")
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        Log.d("Creating2", "onCreateView")
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("Creating", "onViewCreated")
-        auth = Firebase.auth
-        val currentUser = auth.currentUser
+        Log.d("Creating2", "onViewCreated")
 
-        if (currentUser != null) {
-            Toast.makeText(requireContext(), "We Stay In CurrentGameList", Toast.LENGTH_LONG).show()
-        } else {
-            val navController = findNavController()
-            navController.navigate(R.id.login_fragment)
-        }
-//        loginViewModel.user.observe(viewLifecycleOwner, Observer { user ->
-//            if (user != null) {
-//
-//            } else {
-//                navController.navigate(R.id.login_fragment)
-//            }
-//        })
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("Creating", "onStart")
 
     }
 
-    private fun observeAuthenticationState() {
-        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer {
-            when (it) {
-
-            }
-        })
-    }
 
 
     override fun onDestroyView() {
@@ -75,3 +49,4 @@ class CurrentGameList : Fragment() {
 }
 //1. Zastanowić się na ideą Auth itd., czy to ma być observable itd. i co się dzieje jak jest null i WRACA, że just nie jest
 //2. Przetestoweać nadawanie Auth itd. null i poszuakć w necie, czy tak uniknie się leak'ów
+//3. Przetesotwać tą instrukcję z codelabs 6.1 i zobaczyc jak działa

@@ -6,14 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthCredential
 
-class LoginViewModel(val application: Application) : ViewModel() {
+class LoginViewModel() : ViewModel() {
 
     var  userRepository : UserRepository = UserRepository()
 
     lateinit var userLiveData : LiveData<User>
-    val user: LiveData<User> = TODO()
+    //val user: LiveData<User> = TODO()
+   // val loggedUser: LiveData<FirebaseUser>
 
     fun signInWithGoogle(googleAuthCredential: AuthCredential) {
         userLiveData = userRepository.firebaseSingInWithGoogle(googleAuthCredential)
@@ -22,9 +24,6 @@ class LoginViewModel(val application: Application) : ViewModel() {
     fun createUser(authenticatedUser: User) {
         userLiveData = userRepository.createNewUser(authenticatedUser)
     }
-
-
-
 
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION

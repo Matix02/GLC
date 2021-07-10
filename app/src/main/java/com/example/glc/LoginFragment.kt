@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.glc.databinding.FragmentLoginBinding
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,13 +24,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
-
     companion object {
         private const val TAG = "LoginFragment"
         private const val RC_SIGN_IN = 9001
     }
 
-    private val viewModel by viewModels<LoginViewModel>()
+    private lateinit var loginViewModel: LoginViewModel
 
     private lateinit var navController: NavController
 
@@ -42,17 +41,34 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        //viewModel = ViewModelProvider(requireActivity()).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        auth = Firebase.auth
+
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //sprawdzić zmianę poprzez NavController do innego Fragmentu, czy czasem nie w funkcji to umiescic
         navController = findNavController()
         initGoogleSignInClient()
 
+        observeAuthenticationState()
+
         binding?.loginButton?.setOnClickListener { signIn() }
         binding?.logoutButton?.setOnClickListener { signOut() }
+    }
+    private fun observeAuthenticationState() {
+        loginViewModel.authenticationState.observe(viewLifecycleOwner, {
+            when (it) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    Toast.makeText(requireContext(), "AUTHENTICATED", Toast.LENGTH_LONG).show()
+                    Log.d("Creating2", "Observe ViewModel")
+                    navController.navigate(R.id.current_game_list)
+                }
+                else -> { Toast.makeText(requireContext(), "NO AUTHENTICATED", Toast.LENGTH_LONG).show() }
+            }
+        })
     }
 
     private fun initGoogleSignInClient() {
@@ -64,36 +80,30 @@ class LoginFragment : Fragment() {
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
     }
 
-    //LOGIN SECTION
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-        Log.d("Creating", "onStart from LoginFragment")
-
-    }
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
+                val account = task?.getResult(ApiException::class.java)
+                Log.d(TAG, "Task 1 - firebaseAuthWithGoogle:" + account?.id)
+
+                firebaseAuthWithGoogle(account?.idToken!!)
             } catch (e: ApiException) {
-                Log.w(TAG, "Google sign in failed", e)
+                Log.w(TAG, "Google sign in failed $e")
             }
         }
     }
+
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        viewModel.signInWithGoogle(credential)
+        loginViewModel.signInWithGoogle(credential)
 
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
@@ -118,10 +128,6 @@ class LoginFragment : Fragment() {
         else {
             Toast.makeText(requireContext(), "Failed!!!", Toast.LENGTH_LONG).show()
         }
-    }
-
-    fun goToMainAcitivty(user: User) {
-        //Funkcja zamykająca Acitivity i Idaca dalej
     }
 
     override fun onDestroyView() {
