@@ -18,8 +18,6 @@ import com.google.firebase.ktx.Firebase
 
 class CurrentGameList : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-
     private var _binding: FragmentCurrentGameListBinding? = null
     private val binding get() = _binding
 
@@ -28,7 +26,7 @@ class CurrentGameList : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentCurrentGameListBinding.inflate(inflater, container, false)
         val view = binding?.root
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
         Log.d("Creating2", "onCreateView")
         return view
     }
@@ -37,10 +35,7 @@ class CurrentGameList : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("Creating2", "onViewCreated")
 
-
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()

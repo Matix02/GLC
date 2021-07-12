@@ -1,21 +1,15 @@
 package com.example.glc
 
-import android.app.Application
-import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthCredential
 
 class LoginViewModel() : ViewModel() {
 
     var  userRepository : UserRepository = UserRepository()
 
     lateinit var userLiveData : LiveData<User>
-    //val user: LiveData<User> = TODO()
-   // val loggedUser: LiveData<FirebaseUser>
 
     fun signInWithGoogle(googleAuthCredential: AuthCredential) {
         userLiveData = userRepository.firebaseSingInWithGoogle(googleAuthCredential)

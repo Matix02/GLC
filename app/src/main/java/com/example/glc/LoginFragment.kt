@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.glc.databinding.FragmentLoginBinding
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -100,11 +99,11 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         loginViewModel.signInWithGoogle(credential)
-
+        val user2 = User(idToken, "JJJJJ", "Wp@wp.pl")
+        loginViewModel.createUser(user2)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -118,9 +117,7 @@ class LoginFragment : Fragment() {
             }
     }
 
-    private fun signOut() {
-        Firebase.auth.signOut()
-    }
+    private fun signOut() { Firebase.auth.signOut() }
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null)

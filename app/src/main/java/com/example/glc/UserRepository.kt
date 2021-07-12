@@ -17,7 +17,7 @@ class UserRepository : LiveData<FirebaseUser?>() {
     private val TAG = "UserRepository"
 
     private val rootRef: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val userRef: CollectionReference = rootRef.collection("Users")
+    private val userRef: CollectionReference = rootRef.collection("users")
 
     private val firebaseAuth = FirebaseAuth.getInstance()
 
@@ -49,7 +49,17 @@ class UserRepository : LiveData<FirebaseUser?>() {
                     if (name != null) {
                         if (email != null) {
                             val user = User(uid, name, email)
+
                             authUserMutableLiveData.postValue(user)
+
+                            userRef.add(user)
+                                .addOnSuccessListener { documentReference ->
+                                    Log.d(TAG, "Created User")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w(TAG, "Didnt create user $e")
+                                }
+
                         }
                     }
                 }
