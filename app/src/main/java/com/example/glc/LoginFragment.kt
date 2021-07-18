@@ -55,8 +55,13 @@ class LoginFragment : Fragment() {
         observeAuthenticationState()
 
         binding?.loginButton?.setOnClickListener { signIn() }
-        binding?.logoutButton?.setOnClickListener { signOut() }
+        binding?.button2?.setOnClickListener { signOut() }
     }
+
+    private fun signOut() {
+        googleSignInClient.signOut()
+    }
+
     private fun observeAuthenticationState() {
         loginViewModel.authenticationState.observe(viewLifecycleOwner, {
             when (it) {
@@ -116,8 +121,6 @@ class LoginFragment : Fragment() {
                 }
             }
     }
-
-    private fun signOut() { Firebase.auth.signOut() }
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null)

@@ -25,13 +25,9 @@ class UserRepository : LiveData<FirebaseUser?>() {
         value = firebaseAuth.currentUser
     }
 
-    override fun onActive() {
-        firebaseAuth.addAuthStateListener(authStateListener)
-    }
+    override fun onActive() { firebaseAuth.addAuthStateListener(authStateListener) }
 
-    override fun onInactive() {
-        firebaseAuth.removeAuthStateListener(authStateListener)
-    }
+    override fun onInactive() { firebaseAuth.removeAuthStateListener(authStateListener) }
 
     fun firebaseSingInWithGoogle(googleAuthCredential: AuthCredential): MutableLiveData<User> {
         val authUserMutableLiveData = MutableLiveData<User>()
@@ -57,14 +53,13 @@ class UserRepository : LiveData<FirebaseUser?>() {
                                     Log.d(TAG, "Created User")
                                 }
                                 .addOnFailureListener { e ->
-                                    Log.w(TAG, "Didnt create user $e")
+                                    Log.w(TAG, "Didn't create user $e")
                                 }
-
                         }
                     }
                 }
             } else {
-                Log.e(TAG, "Error = ${authTask.exception?.message}")
+                Log.e(TAG, "Error = ${authTask.exception?.message} ")
             }
         }
         return authUserMutableLiveData
@@ -93,3 +88,6 @@ class UserRepository : LiveData<FirebaseUser?>() {
         return newUserMutableLiveData
     }
 }
+
+//Żeby prawdziwie wylogowyało użytkowników, należy googleSignInClient i wtedy singOut
+//1. Spróbować wpierw użyć singletona, na tej zmiennej aby była jedna i niepowtarzalna
