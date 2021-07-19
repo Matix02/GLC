@@ -19,10 +19,6 @@ class LoginViewModel() : ViewModel() {
         userLiveData = userRepository.createNewUser(authenticatedUser)
     }
 
-    override fun onCleared(){
-
-    }
-
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }

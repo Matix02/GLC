@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id("androidx.navigation.safeargs.kotlin")
 
 }
 
@@ -62,6 +63,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:23.0.2'
     //Canary - Memory's Leak Test
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    //Swipe
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.+'

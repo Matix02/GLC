@@ -48,14 +48,17 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //sprawdzić zmianę poprzez NavController do innego Fragmentu, czy czasem nie w funkcji to umiescic
         navController = findNavController()
+
+        val signOutArgs = arguments?.getBoolean("sign_out")
+
         initGoogleSignInClient()
 
         observeAuthenticationState()
 
+        if (signOutArgs == true) signOut()
+
         binding?.loginButton?.setOnClickListener { signIn() }
-        binding?.button2?.setOnClickListener { signOut() }
     }
 
     private fun signOut() {
@@ -66,17 +69,17 @@ class LoginFragment : Fragment() {
         loginViewModel.authenticationState.observe(viewLifecycleOwner, {
             when (it) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    Toast.makeText(requireContext(), "AUTHENTICATED", Toast.LENGTH_LONG).show()
-                    Log.d("Creating2", "Observe ViewModel")
+                    updateUI(auth.currentUser)
                     navController.navigate(R.id.current_game_list)
                 }
-                else -> { Toast.makeText(requireContext(), "NO AUTHENTICATED", Toast.LENGTH_LONG).show() }
+                else -> { updateUI(null) }
             }
         })
     }
 
     private fun initGoogleSignInClient() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
@@ -125,15 +128,14 @@ class LoginFragment : Fragment() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null)
             Toast.makeText(requireContext(), "Success!!!", Toast.LENGTH_LONG).show()
-        else {
+        else
             Toast.makeText(requireContext(), "Failed!!!", Toast.LENGTH_LONG).show()
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-//Dobre praktyki stosowanie zapisów w OnCreate i OnViewCreated
 }
 
+//Przekazywać info kiedy nacisnę, Wyloguj, tutaj bedzie warunek, który mówi, że jeśli pochodzi z klasy Wyloguj to wtedy googleSignInClient.signOut i firebase auth

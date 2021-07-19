@@ -3,11 +3,9 @@ package com.example.glc
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,7 +31,6 @@ class UserRepository : LiveData<FirebaseUser?>() {
         val authUserMutableLiveData = MutableLiveData<User>()
         firebaseAuth.signInWithCredential(googleAuthCredential).addOnCompleteListener { authTask ->
             if (authTask.isSuccessful) {
-                val isNewUser = authTask.result?.additionalUserInfo?.isNewUser
 
                 val firebaseUser = firebaseAuth.currentUser
 
@@ -90,4 +87,9 @@ class UserRepository : LiveData<FirebaseUser?>() {
 }
 
 //Żeby prawdziwie wylogowyało użytkowników, należy googleSignInClient i wtedy singOut
-//1. Spróbować wpierw użyć singletona, na tej zmiennej aby była jedna i niepowtarzalna
+//1. !!!CHECKED!!! - Spróbować wpierw użyć singletona, na tej zmiennej aby była jedna i niepowtarzalna
+//3. Zrobić to main UI, aby było niewidczone przy LoginFragment
+//5. !!!CHECKED!!! - Zastanowić się nad tymi animacjami w Navigation..., by przechodziło gdy chodzi o Wylogowywanie
+//6. 6.1 GET pobrać dane z firestore na temat użytkowników - 6.2 i sprawdzic (?exists) czy UID jest już wykorzystywane jako nazwa Dokumentu
+//4. Slide -> <- między kartami już na głównym ekranie z BottomMenu
+//2. Poprawić ogólnie kod w Repo i ViewModel i LoginFragment
