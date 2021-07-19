@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -18,7 +19,7 @@ import com.example.glc.databinding.ActivityMainBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MenuController {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -37,6 +38,16 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph)
 
         bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.login_fragment) {
+                setBotNavToLocked()
+
+            } else {
+                setBotNavToUnlocked()
+            }
+        }
+
 
         //1.Po zalogowaniu należy przejść przejść tutaj z powrotem i wykorzystać SetUpWithNaviga (below) w tej instrukcji warunkowej
         //2. Pomysł na to by bottomNavigationView było domyslnie ukryte i dopiero po logowaniu było dokryte
@@ -65,5 +76,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         this.finishAfterTransition()
+    }
+
+    override fun setBotNavToLocked() {
+        binding.bottomNavView.visibility = View.GONE
+        supportActionBar?.hide()
+    }
+
+    override fun setBotNavToUnlocked() {
+        binding.bottomNavView.visibility = View.VISIBLE
+        supportActionBar?.show()
     }
 }
