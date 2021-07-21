@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.glc.databinding.FragmentCurrentGameListBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -21,13 +22,13 @@ class CurrentGameList : Fragment() {
     private var _binding: FragmentCurrentGameListBinding? = null
     private val binding get() = _binding
 
-    private lateinit var loginViewModel: LoginViewModel
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentCurrentGameListBinding.inflate(inflater, container, false)
         val view = binding?.root
 
         Log.d("Creating2", "onCreateView")
+
+
         return view
     }
 

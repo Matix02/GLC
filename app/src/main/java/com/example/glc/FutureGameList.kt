@@ -14,11 +14,10 @@ class FutureGameList : Fragment() {
     private val binding get() = _binding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         _binding = FragmentFutureGameListBinding.inflate(inflater, container, false)
-        val view = binding?.root
 
-        return view
+
+        return binding?.root
     }
 
     override fun onDestroyView() {

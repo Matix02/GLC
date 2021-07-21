@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -40,6 +41,7 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         auth = Firebase.auth
 
@@ -53,6 +55,7 @@ class LoginFragment : Fragment() {
         val signOutArgs = arguments?.getBoolean("sign_out")
 
         initGoogleSignInClient()
+
 
         observeAuthenticationState()
 
@@ -69,10 +72,14 @@ class LoginFragment : Fragment() {
         loginViewModel.authenticationState.observe(viewLifecycleOwner, {
             when (it) {
                 LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                    updateUI(auth.currentUser)
+                   //updateUI(auth.currentUser)
+                    navController.graph.startDestination = R.id.current_game_list
                     navController.navigate(R.id.current_game_list)
+
                 }
-                else -> { updateUI(null) }
+                else -> {
+                    //updateUI(null)
+                }
             }
         })
     }
@@ -99,19 +106,16 @@ class LoginFragment : Fragment() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task?.getResult(ApiException::class.java)
-                Log.d(TAG, "Task 1 - firebaseAuthWithGoogle:" + account?.id)
-
                 firebaseAuthWithGoogle(account?.idToken!!)
+
             } catch (e: ApiException) {
-                Log.w(TAG, "Google sign in failed $e")
             }
         }
     }
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         loginViewModel.signInWithGoogle(credential)
-        val user2 = User(idToken, "JJJJJ", "Wp@wp.pl")
-        loginViewModel.createUser(user2)
+
         auth.signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -137,5 +141,3 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 }
-
-//Przekazywać info kiedy nacisnę, Wyloguj, tutaj bedzie warunek, który mówi, że jeśli pochodzi z klasy Wyloguj to wtedy googleSignInClient.signOut i firebase auth

@@ -8,25 +8,22 @@
     <fragment
         android:id="@+id/past_game_list"
         android:name="com.example.glc.PastGameList"
-        android:label="fragment_past_game_list"
-        tools:layout="@layout/fragment_past_game_list"
-        />
+        android:label="GLC"
+        tools:layout="@layout/fragment_past_game_list" />
     <fragment
         android:id="@+id/current_game_list"
         android:name="com.example.glc.CurrentGameList"
-        android:label="fragment_current_game_list"
-        tools:layout="@layout/fragment_current_game_list"
-        />
+        android:label="GLC"
+        tools:layout="@layout/fragment_current_game_list" />
     <fragment
         android:id="@+id/future_game_list"
         android:name="com.example.glc.FutureGameList"
-        android:label="fragment_future_game_list"
-        tools:layout="@layout/fragment_future_game_list"
-        />
+        android:label="GLC"
+        tools:layout="@layout/fragment_future_game_list" />
     <fragment
         android:id="@+id/login_fragment"
         android:name="com.example.glc.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login" />
 
     <action
@@ -37,5 +34,17 @@
             android:defaultValue="false"
             app:argType="boolean" />
     </action>
+    <fragment
+        android:id="@+id/add_fragment"
+        android:name="com.example.glc.AddFragment"
+        android:label="Add Game"
+        tools:layout="@layout/fragment_add" />
+    <action
+        android:id="@+id/action_global_add_fragment"
+        app:destination="@id/add_fragment"
+        app:enterAnim="@anim/fui_slide_in_right"
+        app:exitAnim="@anim/fui_slide_out_left"
+        app:popEnterAnim="@android:anim/slide_in_left"
+        app:popExitAnim="@android:anim/slide_out_right" />
 
 </navigation>

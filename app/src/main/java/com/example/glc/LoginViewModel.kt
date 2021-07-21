@@ -15,10 +15,6 @@ class LoginViewModel() : ViewModel() {
         userLiveData = userRepository.firebaseSingInWithGoogle(googleAuthCredential)
     }
 
-    fun createUser(authenticatedUser: User) {
-        userLiveData = userRepository.createNewUser(authenticatedUser)
-    }
-
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
@@ -30,7 +26,5 @@ class LoginViewModel() : ViewModel() {
             AuthenticationState.UNAUTHENTICATED
         }
     }
-
-
 
 }
