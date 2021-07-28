@@ -43,6 +43,4 @@ class CurrentGameList : Fragment() {
         _binding = null
     }
 }
-//1. Zastanowić się na ideą Auth itd., czy to ma być observable itd. i co się dzieje jak jest null i WRACA, że just nie jest
-//2. Przetestoweać nadawanie Auth itd. null i poszuakć w necie, czy tak uniknie się leak'ów
 //3. Przetesotwać tą instrukcję z codelabs 6.1 i zobaczyc jak działa

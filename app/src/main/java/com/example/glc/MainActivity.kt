@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), MenuController {
                 R.id.future_game_list
             )
         )
-
+//Już nie ma back Buttona, należy zobaczyć ten Search
         bottomNavigationView.setupWithNavController(navController)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -66,10 +66,8 @@ class MainActivity : AppCompatActivity(), MenuController {
                 Firebase.auth.signOut()
                 navController.navigate(action)
                 true
-            } /* R.id.add_fragment -> {
-                navController.navigate(R.id.add_fragment)
-                true
-            } */  R.id.add_fragment -> {
+            }
+            R.id.add_fragment -> {
                 val action = NavGraphDirections.actionGlobalAddFragment()
                 navController.navigate(action)
                 true
