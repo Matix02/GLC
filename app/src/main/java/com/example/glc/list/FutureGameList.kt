@@ -1,4 +1,4 @@
-package com.example.glc
+package com.example.glc.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,21 +1,23 @@
-package com.example.glc
+package com.example.glc.list
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.example.glc.R
 import com.example.glc.databinding.FragmentCurrentGameListBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import org.json.JSONObject
+import retrofit2.HttpException
+import java.io.IOException
+//Zmienić nazwę fragmentów na CurrentGameListFragment and so on
+const val TAG = "CurrentGameList"
 
 class CurrentGameList : Fragment() {
 
@@ -24,12 +26,9 @@ class CurrentGameList : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentCurrentGameListBinding.inflate(inflater, container, false)
-        val view = binding?.root
-
         Log.d("Creating2", "onCreateView")
 
-
-        return view
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

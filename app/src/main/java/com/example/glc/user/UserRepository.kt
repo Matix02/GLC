@@ -1,4 +1,4 @@
-package com.example.glc
+package com.example.glc.user
 
 import android.util.Log
 import androidx.lifecycle.LiveData

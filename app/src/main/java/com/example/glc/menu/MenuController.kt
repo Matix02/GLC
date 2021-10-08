@@ -1,4 +1,4 @@
-package com.example.glc
+package com.example.glc.menu
 
 interface MenuController {
     fun setBotNavToLocked()

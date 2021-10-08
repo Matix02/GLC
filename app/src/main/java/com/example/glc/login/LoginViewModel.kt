@@ -1,8 +1,10 @@
-package com.example.glc
+package com.example.glc.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import com.example.glc.user.User
+import com.example.glc.user.UserRepository
 import com.google.firebase.auth.AuthCredential
 
 class LoginViewModel() : ViewModel() {

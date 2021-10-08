@@ -1,27 +1,29 @@
 package com.example.glc
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.example.glc.databinding.ActivityMainBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import java.lang.Exception
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MenuController {
+class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var mainViewModel: MainViewModel
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,56 +41,74 @@ class MainActivity : AppCompatActivity(), MenuController {
                 R.id.future_game_list
             )
         )
-//Już nie ma back Buttona, należy zobaczyć ten Search
+
         bottomNavigationView.setupWithNavController(navController)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.login_fragment) {
-                setBotNavToLocked()
+            //Może sealed class
+            when (destination.id) {
+                R.id.login_fragment -> {
+                    hideNavigationBars()
+                }
 
-            } else {
-                setBotNavToUnlocked()
+                R.id.add_fragment -> {
+
+                    //UiConfigs.uiConfig[destination.id]
+
+                    //Poszukać dynamic menu updates
+                    //https://stackoverflow.com/questions/62026067/navigationcomponent-navigate-away-from-bottomnavitationview/62026782#62026782
+                   // hideBottomNavigation()
+                }
+                R.id.current_game_list -> {
+                   // UiConfigs.uiConfig[destination.id]
+
+                }
+                //else -> { showBottomNavigation() }
+                else -> throw Exception("No config found for ${destination.label}")
             }
         }
     }
-
+    //https:stackoverflow.com/questions/63762233/android-navigation-component-how-to-connect-toolbar-menu-to-the-fragments
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_menu, menu)
         return true
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+//Zrobić -> https://developer.android.com/codelabs/android-navigation?index=..%2F..%2Findex#0
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            //Sealed class raczej
             R.id.login_fragment -> {
-                val action = LoginFragmentDirections.actionGlobalLoginFragment(true)
+                /*val action = LoginFragmentDirections.actionGlobalLoginFragment(true)
                 Firebase.auth.signOut()
-                navController.navigate(action)
+                navController.navigate(action)*/
                 true
             }
             R.id.add_fragment -> {
                 val action = NavGraphDirections.actionGlobalAddFragment()
                 navController.navigate(action)
                 true
-            }  else -> item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+            }
+            else -> item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
         }
-    }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
+    override fun onSupportNavigateUp() = navController.navigateUp() || super.onSupportNavigateUp()
 
-    override fun onBackPressed() {
-        this.finishAfterTransition()
-    }
+    override fun onBackPressed() = this.finishAfterTransition()
 
-    override fun setBotNavToLocked() {
-        binding.bottomNavView.visibility = View.GONE
+    //Istnieje jakiś dziwny MenuController, chyba niepotrzebny
+    private fun hideNavigationBars() = binding.bottomNavView.let {
+        it.isVisible = false
         supportActionBar?.hide()
     }
 
-    override fun setBotNavToUnlocked() {
+    private fun hideBottomNavigation() = binding.bottomNavView.let {
+        it.isVisible = false
+
+    }
+
+    private fun showBottomNavigation() {
         binding.bottomNavView.visibility = View.VISIBLE
         supportActionBar?.show()
     }

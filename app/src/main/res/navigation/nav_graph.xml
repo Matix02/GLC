@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/past_game_list"
-        android:name="com.example.glc.PastGameList"
+        android:name="com.example.glc.list.PastGameList"
         android:label="GLC"
         tools:layout="@layout/fragment_past_game_list" />
     <fragment
         android:id="@+id/current_game_list"
-        android:name="com.example.glc.CurrentGameList"
+        android:name="com.example.glc.list.CurrentGameList"
         android:label="GLC"
         tools:layout="@layout/fragment_current_game_list" />
     <fragment
         android:id="@+id/future_game_list"
-        android:name="com.example.glc.FutureGameList"
+        android:name="com.example.glc.list.FutureGameList"
         android:label="GLC"
         tools:layout="@layout/fragment_future_game_list" />
     <fragment
         android:id="@+id/login_fragment"
-        android:name="com.example.glc.LoginFragment"
+        android:name="com.example.glc.login.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login" />
 
@@ -36,9 +36,14 @@
     </action>
     <fragment
         android:id="@+id/add_fragment"
-        android:name="com.example.glc.AddFragment"
+        android:name="com.example.glc.add.AddFragment"
         android:label="Add Game"
-        tools:layout="@layout/fragment_add" />
+        tools:layout="@layout/fragment_add">
+        <argument
+            android:name="HideBottomBar"
+            android:defaultValue="true" />
+
+    </fragment>
     <action
         android:id="@+id/action_global_add_fragment"
         app:destination="@id/add_fragment"
